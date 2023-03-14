@@ -11,13 +11,7 @@ import { PbEnv } from './config/environments/pb-env.service';
 @Module({
   imports: [
     // graphql導入
-    // コードファースト：.gqlの出力先設定
-    // GraphQLModule.forRoot({
-    //   autoSchemaFile: path.join(process.cwd(), 'src/schema.gql'),
-    //   sortSchema: true,
-    // }),
-
-    // enc設定用にカスタムしたPbEnv-moduleを使用するために同期的読み込み
+    // env設定用にカスタムしたPbEnv-moduleを使用するために同期的読み込み
     GraphQLModule.forRootAsync({
       inject: [PbEnv],
       useFactory: (env: PbEnv) => env.GqlModuleOptionsFactory,

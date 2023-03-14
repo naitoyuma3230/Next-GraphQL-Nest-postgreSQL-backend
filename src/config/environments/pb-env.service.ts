@@ -1,17 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GqlModuleOptions } from '@nestjs/graphql';
+
 import * as path from 'path';
 import * as process from 'process';
 // const path = require('path');
 // const process = require('process');
+import { LoggingWinston } from '@google-cloud/logging-winston';
+import {
+  utilities as nestWinstonModuleUtilities,
+  WinstonModuleOptions,
+} from 'nest-winston';
+import winston from 'winston';
+import { PrismaClientOptions } from '@prisma/client/runtime';
 
-// import path from 'path';
-// import process from 'process';
-
-/**
- * アプリケーションモジュールで利用する設定値は、ここから取得します。
- */
+/* アプリケーションモジュールで利用する設定値はここから取得*/
 @Injectable()
 export class PbEnv {
   constructor(private configService: ConfigService) {}
@@ -36,7 +39,7 @@ export class PbEnv {
     return this.configService.get('DATABASE_URL');
   }
 
-  // migrateの実行を環境によって使い分ける
+  // GraphQl: .gplの実行設定に関するGqlmoduleOptionsを環境によって使い分ける
   get GqlModuleOptionsFactory(): GqlModuleOptions {
     // 開発環境：コードからスキーマを生成,playgroundはブラウザ上でGraphQLを検証する機能
     // バックエンドのコードが正なのでコードファーストアプローチを使う
